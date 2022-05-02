@@ -23,11 +23,53 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+    const matrixCopy = JSON.parse(JSON.stringify(matrix))
+    matrix.map((value, index, array) => {
+        value.forEach((val, i, arr) => {
+            if (val === true) {
+                matrixCopy[index][i] = 1;
+            } else if (val === false) {
+                matrixCopy[index][i] = 0;
+                //top-left
+                if (i > 0 && index > 0 && (matrix[index - 1][i - 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //top
+                if (index > 0 && (matrix[index - 1][i] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //top-right
+                if (i < arr.length - 1 && index > 0 && (matrix[index - 1][i + 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //right
+                if (i < arr.length - 1 && (matrix[index][i + 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //bottom-right
+                if (i < arr.length - 1 && index < array.length - 1 && (matrix[index + 1][i + 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //bottom
+                if (index < array.length - 1 && (matrix[index + 1][i] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //bottom-left
+                if (i > 0 && index < array.length - 1 && (matrix[index + 1][i - 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+                //left
+                if (i > 0 && (matrix[index][i - 1] === true)) {
+                    matrixCopy[index][i]++;
+                }
+            }
+        })
+        return value;
+    })
+    return matrixCopy;
 }
 
 module.exports = {
-  minesweeper
+    minesweeper
 };
